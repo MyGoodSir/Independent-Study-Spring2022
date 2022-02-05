@@ -273,4 +273,37 @@ class DenseMatrix {
 	vcat(B) {
 		return new DenseMatrix(this.data.vcat(B.data));
 	}
+
+	values(){
+		return new DenseMatrixIterator(this);
+	}
+}
+class DenseMatrixIterator {
+	// constructor
+	constructor(mat) {
+		this._mat = mat;
+	}
+
+	[Symbol.iterator]() {
+		return {
+			mat: this._mat,
+			current: 0,
+			end: this._mat.nRows(),
+			next() {
+				if (this.current >= this.end) {
+					return {
+						done: true
+					};
+
+				} else {
+					let val = this.mat.get(this.current);
+					this.current += 1;
+					return {
+						done: false,
+						value: val
+					}
+				}
+			}
+		}
+	}
 }
